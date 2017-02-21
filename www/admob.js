@@ -71,24 +71,6 @@ var _extends = Object.assign || function (target) {
   return target;
 };
 
-var _instanceof = function (left, right) {
-  if (right != null && typeof Symbol !== "undefined" && right[Symbol.hasInstance]) {
-    return right[Symbol.hasInstance](left);
-  } else {
-    return left instanceof right;
-  }
-};
-
-
-
-var babelHelpers$1 = Object.freeze({
-	classCallCheck: classCallCheck,
-	createClass: createClass,
-	typeof: _typeof,
-	extends: _extends,
-	instanceof: _instanceof
-});
-
 /**
  * @ignore
  */
@@ -153,7 +135,7 @@ function translateOptions(options) {
       console.warn('`forFamily` will not accept string in future, pass boolean instead');
     }
   }
-  return babelHelpers$1['extends']({}, options, opts);
+  return _extends({}, options, opts);
 }
 
 /**
@@ -225,7 +207,7 @@ var Banner = function () {
   function Banner(opts) {
     classCallCheck(this, Banner);
 
-    this.config(babelHelpers$1['extends']({
+    this.config(_extends({
       size: sizes.SMART_BANNER
     }, opts));
   }
@@ -246,7 +228,7 @@ var Banner = function () {
   createClass(Banner, [{
     key: 'config',
     value: function config(opts) {
-      this._config = babelHelpers$1['extends']({}, this._config, opts);
+      this._config = _extends({}, this._config, opts);
       return this._config;
     }
 
@@ -258,7 +240,7 @@ var Banner = function () {
   }, {
     key: 'prepare',
     value: function prepare() {
-      var options = babelHelpers$1['extends']({
+      var options = _extends({
         publisherId: this._config.id
       }, this._config);
       delete options.id;
@@ -329,7 +311,7 @@ var Interstitial = function () {
   function Interstitial(opts) {
     classCallCheck(this, Interstitial);
 
-    this.config(babelHelpers$1['extends']({}, opts));
+    this.config(_extends({}, opts));
   }
 
   /**
@@ -342,7 +324,7 @@ var Interstitial = function () {
   createClass(Interstitial, [{
     key: 'config',
     value: function config(opts) {
-      this._config = babelHelpers$1['extends']({}, this._config, opts);
+      this._config = _extends({}, this._config, opts);
       return this._config;
     }
 
@@ -353,7 +335,7 @@ var Interstitial = function () {
   }, {
     key: 'prepare',
     value: function prepare() {
-      var options = babelHelpers$1['extends']({
+      var options = _extends({
         interstitialAdId: this._config.id
       }, this._config);
       delete options.id;
@@ -386,9 +368,8 @@ Interstitial.events = events$1;
 var events$2 = buildEvents('rewardvideo', ['LOAD', 'LOAD_FAIL', 'OPEN', 'CLOSE', 'EXIT_APP', 'START', 'REWARD']);
 
 /**
- * @protected
- * @desc
  * See usage in {@link rewardvideo}.
+ * @protected
  */
 
 var RewardVideo = function () {
@@ -400,7 +381,7 @@ var RewardVideo = function () {
   function RewardVideo(opts) {
     classCallCheck(this, RewardVideo);
 
-    this.config(babelHelpers$1['extends']({}, opts));
+    this.config(_extends({}, opts));
   }
 
   /**
@@ -413,7 +394,7 @@ var RewardVideo = function () {
   createClass(RewardVideo, [{
     key: 'config',
     value: function config(opts) {
-      this._config = babelHelpers$1['extends']({}, this._config, opts);
+      this._config = _extends({}, this._config, opts);
       return this._config;
     }
 
@@ -424,7 +405,7 @@ var RewardVideo = function () {
   }, {
     key: 'prepare',
     value: function prepare() {
-      var options = babelHelpers$1['extends']({
+      var options = _extends({
         rewardVideoId: this._config.id
       }, this._config);
       delete options.id;
@@ -450,6 +431,11 @@ RewardVideo.events = events$2;
 /**
  * @type {Banner}
  * @since 0.6
+ * @emits {admob.banner.events.LOAD}
+ * @emits {admob.banner.events.LOAD_FAIL}
+ * @emits {admob.banner.events.OPEN}
+ * @emits {admob.banner.events.CLOSE}
+ * @emits {admob.banner.events.EXIT_APP}
  * @example
  * admob.banner.config({
  *  id: 'ca-app-pub-xxx/xxx',
@@ -472,6 +458,11 @@ var banner = new Banner();
 /**
  * @type {Interstitial}
  * @since 0.6
+ * @emits {admob.interstitial.events.LOAD}
+ * @emits {admob.interstitial.events.LOAD_FAIL}
+ * @emits {admob.interstitial.events.OPEN}
+ * @emits {admob.interstitial.events.CLOSE}
+ * @emits {admob.interstitial.events.EXIT_APP}
  * @example
  * admob.interstitial.config({
  *  id: 'ca-app-pub-xxx/xxx',
@@ -484,8 +475,20 @@ var banner = new Banner();
 var interstitial = new Interstitial();
 
 /**
+ * @external {cordova-admob-mediation} https://github.com/rehy/cordova-admob-mediation
+ */
+/**
+ * Reward video requires mediation SDK to be installed,
+ * see {@link cordova-admob-mediation} for list of supported networks.
  * @type {RewardVideo}
  * @since 0.6
+ * @emits {admob.rewardvideo.events.LOAD}
+ * @emits {admob.rewardvideo.events.LOAD_FAIL}
+ * @emits {admob.rewardvideo.events.OPEN}
+ * @emits {admob.rewardvideo.events.CLOSE}
+ * @emits {admob.rewardvideo.events.EXIT_APP}
+ * @emits {admob.rewardvideo.events.START}
+ * @emits {admob.rewardvideo.events.REWARD}
  * @example
  * admob.rewardvideo.config({
  *  id: 'ca-app-pub-xxx/xxx',
@@ -527,7 +530,7 @@ var rewardvideo = new RewardVideo();
  * @param {function()} [failureCallback]
  */
 function setOptions(options, successCallback, failureCallback) {
-  if ((typeof options === 'undefined' ? 'undefined' : babelHelpers$1['typeof'](options)) === 'object') {
+  if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object') {
     Object.keys(options).forEach(function (k) {
       switch (k) {
         case 'publisherId':
